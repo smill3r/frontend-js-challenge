@@ -11,15 +11,18 @@ import { TrendService } from './trend.service';
 import { TrendsListComponent } from './trends-list/trends-list.component';
 import { trendsEffects } from './store/effects';
 import { trendsFeatureKey, trendsReducer } from './store/reducers';
+import { TrendComposeComponent } from './trend-compose/trend-compose.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [TrendsListComponent, TrendDetailComponent],
+  declarations: [TrendsListComponent, TrendDetailComponent, TrendComposeComponent],
   imports: [
     CommonModule,
     AppTrendsRoutingModule,
     HttpClientModule,
     StoreModule.forFeature(trendsFeatureKey, trendsReducer),
     EffectsModule.forFeature(trendsEffects),
+    ReactiveFormsModule
   ],
   exports: [TrendsListComponent],
   providers: [

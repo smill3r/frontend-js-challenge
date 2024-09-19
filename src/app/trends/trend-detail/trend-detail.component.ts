@@ -13,7 +13,7 @@ import { selectSelectedTrend } from '../store/selectors';
     <article class="trend__detail" *ngIf="trend$ | async as trend">
       <header class="trend__header">
         <div class="trend__actions">
-          <button type="button" class="trend__action">
+          <button type="button" class="trend__action" (click)="editTrend()">
             <img src="assets/Iconos/Actions/edit.svg" alt="Editar noticia" />
           </button>
           <button type="button" class="trend__action">
@@ -35,11 +35,31 @@ import { selectSelectedTrend } from '../store/selectors';
         </div>
       </div>
     </article>
+
+    <app-trend-compose
+      *ngIf="this.composeTrendVisible"
+      (close)="modalClosed()"
+    >
+    </app-trend-compose>
   `,
   styleUrls: ['./trend-detail.component.scss'],
 })
 export class TrendDetailComponent {
   protected trend$ = this.store.select(selectSelectedTrend);
 
-  constructor(private store: Store) {}
+  edit = false;
+  composeTrendVisible = false;
+
+  constructor(private store: Store) {
+    this.trend$.subscribe(console.log)
+  }
+
+  editTrend() {
+    this.edit = true;
+    this.composeTrendVisible = true;
+  }
+
+  modalClosed() {
+    this.composeTrendVisible = false;
+  }
 }
