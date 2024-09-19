@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { selectSelectedTrend } from '../store/selectors';
+import { deleteTrend } from '../store/actions/trend-detail-page.actions';
 
 @Component({
   selector: 'app-trend-detail',
@@ -16,7 +17,11 @@ import { selectSelectedTrend } from '../store/selectors';
           <button type="button" class="trend__action" (click)="editTrend()">
             <img src="assets/Iconos/Actions/edit.svg" alt="Editar noticia" />
           </button>
-          <button type="button" class="trend__action">
+          <button
+            type="button"
+            class="trend__action"
+            (click)="deleteTrend(trend.id)"
+          >
             <img src="assets/Iconos/Actions/delete.svg" alt="Borrar noticia" />
           </button>
         </div>
@@ -36,10 +41,7 @@ import { selectSelectedTrend } from '../store/selectors';
       </div>
     </article>
 
-    <app-trend-compose
-      *ngIf="this.composeTrendVisible"
-      (close)="modalClosed()"
-    >
+    <app-trend-compose *ngIf="this.composeTrendVisible" (close)="modalClosed()">
     </app-trend-compose>
   `,
   styleUrls: ['./trend-detail.component.scss'],
@@ -50,13 +52,15 @@ export class TrendDetailComponent {
   edit = false;
   composeTrendVisible = false;
 
-  constructor(private store: Store) {
-    this.trend$.subscribe(console.log)
-  }
+  constructor(private store: Store) {}
 
   editTrend() {
     this.edit = true;
     this.composeTrendVisible = true;
+  }
+
+  deleteTrend(trendId: string) {
+    this.store.dispatch(deleteTrend({ trendId: trendId }));
   }
 
   modalClosed() {

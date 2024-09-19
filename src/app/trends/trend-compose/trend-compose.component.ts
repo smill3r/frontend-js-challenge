@@ -77,7 +77,7 @@ export class TrendComposeComponent implements OnInit, OnDestroy {
     provider: new FormControl(),
     title: new FormControl(),
     body: new FormControl(),
-    image: new FormControl()
+    image: new FormControl(),
   });
 
   public isEdit = true;
@@ -93,7 +93,6 @@ export class TrendComposeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = this.trend$.subscribe((trend) => {
-      console.log(trend);
       if (trend) {
         this.trend = trend;
         this.patchForm(trend);
@@ -111,7 +110,7 @@ export class TrendComposeComponent implements OnInit, OnDestroy {
       provider: trend.provider,
       title: trend.title,
       body: trend.body,
-      image: trend.image
+      image: trend.image,
     });
   }
 
@@ -122,7 +121,6 @@ export class TrendComposeComponent implements OnInit, OnDestroy {
   saveTrend() {
     if (this.isEdit) {
       const changedValues = this.getChangedValues(this.trendForm);
-      console.log(changedValues)
       this.store.dispatch(
         updateTrend({
           changes: changedValues,
@@ -135,10 +133,10 @@ export class TrendComposeComponent implements OnInit, OnDestroy {
 
   getChangedValues(formGroup: FormGroup): any {
     const changedValues: any = {};
-    Object.keys(formGroup.controls).forEach(key => {
+    Object.keys(formGroup.controls).forEach((key) => {
       const control = formGroup.get(key);
       if (control?.dirty) {
-        if(key == 'body') {
+        if (key == 'body') {
           changedValues[key] = control.value.replace(/(?:\r\n|\r|\n)/g, '\n');
         } else {
           changedValues[key] = control.value;
