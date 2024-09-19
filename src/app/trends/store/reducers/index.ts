@@ -32,7 +32,18 @@ export const trendsReducer = createReducer(
   ),
   on(TrendsApiActions.loadOneTrendError, (state): State => {
     return { ...state, selectedTrend: null };
-  })
+  }),
+  on(
+    TrendsApiActions.updateTrendSuccess,
+    (state, { changes, trend }): State => {
+      const updatedTrend = {
+        ...trend,
+        ...changes,
+        body: changes.body ? changes.body.split('/n/n') : trend.body,
+      };
+      return { ...state, selectedTrend: updatedTrend };
+    }
+  )
 );
 
 export const selectSelectedTrend = (state: State) => state.selectedTrend;
