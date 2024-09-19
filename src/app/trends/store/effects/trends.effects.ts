@@ -1,14 +1,23 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
-import { catchError, filter, map, mergeMap, switchMap } from 'rxjs/operators';
+import {
+  catchError,
+  filter,
+  map,
+  mergeMap,
+  switchMap,
+  tap,
+} from 'rxjs/operators';
 import { of } from 'rxjs';
 import { routerNavigationAction } from '@ngrx/router-store';
 
 import * as TrendsApiActions from '../actions/trends-api.actions';
 import * as TrendsListPageActions from '../actions/trends-list-page.actions';
 import * as TrendComposePageActions from '../actions/trends-compose-page.actions';
+import * as TrendDetailPageActions from '../actions/trend-detail-page.actions';
 import { TrendService } from '../../trend.service';
 import { ToastService } from 'src/app/shared/services/toast.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class TrendsEffects {
@@ -58,5 +67,39 @@ export class TrendsEffects {
     );
   });
 
-  constructor(private actions$: Actions, private trendService: TrendService, private toastService: ToastService) {}
+  deleteOneTrend$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(TrendDetailPageActions.deleteTrend),
+      switchMap(({ trendId }) =>
+        this.trendService.deleteTrend(trendId).pipe(
+          map((deleteTrendResponse) => {
+            if (deleteTrendResponse.success) {
+              this.toastService.showSuccess('Article deleted');
+              return TrendsApiActions.deleteTrendSuccess({ id: trendId });
+            }
+            return TrendsApiActions.deleteTrendError();
+          }),
+          catchError(() => of(TrendsApiActions.deleteTrendError()))
+        )
+      )
+    );
+  });
+
+  navigateAfterDelete$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(TrendsApiActions.deleteTrendSuccess),
+        tap(() => {
+          this.router.navigate(['/']);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  constructor(
+    private actions$: Actions,
+    private trendService: TrendService,
+    private toastService: ToastService,
+    private router: Router
+  ) {}
 }

@@ -21,8 +21,15 @@ export const loadOneTrendError = createAction(
 
 export const updateTrendSuccess = createAction(
   '[Trends/API] Update Trend Success',
-  props<{ changes: Partial<TrendDTO>, trend: Trend }>()
+  props<{ changes: Partial<TrendDTO>; trend: Trend }>()
 );
+
+export const deleteTrendSuccess = createAction(
+  '[Trends/API] Update Trend Success',
+  props<{ id: string }>()
+);
+
+export const deleteTrendError = createAction('[Trends/API] Update Trend Error');
 
 export const updateTrendError = createAction('[Trends/API] Update Trend Error');
 

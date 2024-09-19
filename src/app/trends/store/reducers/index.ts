@@ -39,11 +39,14 @@ export const trendsReducer = createReducer(
       const updatedTrend = {
         ...trend,
         ...changes,
-        body: changes.body ? changes.body.split('/n/n') : trend.body,
+        body: changes?.body ? changes?.body.split('/n/n') : trend?.body,
       };
       return { ...state, selectedTrend: updatedTrend };
     }
-  )
+  ),
+  on(TrendsApiActions.deleteTrendSuccess, (state, { id }) => {
+    return adapter.removeOne(id, state);
+  })
 );
 
 export const selectSelectedTrend = (state: State) => state.selectedTrend;
