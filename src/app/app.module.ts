@@ -16,6 +16,7 @@ import { httpInterceptorProviders } from './app-http-interceptors';
 import { reducers } from './store/reducers';
 
 import localeEs from '@angular/common/locales/es';
+import { ToastComponent } from './shared/components/toast/toast.component';
 registerLocaleData(localeEs, 'es');
 
 @NgModule({
@@ -23,6 +24,7 @@ registerLocaleData(localeEs, 'es');
     AppComponent,
     AppProgressBarComponent,
     AppPageNotFoundComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,

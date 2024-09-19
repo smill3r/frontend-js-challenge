@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { delay } from 'rxjs/operators';
 
 import { CustomBreakpointObserver } from './layout';
 import { selectIsLoadingState } from './store/selectors';
+import { ToastComponent } from './shared/components/toast/toast.component';
+import { ToastService } from './shared/services/toast.service';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +35,7 @@ import { selectIsLoadingState } from './store/selectors';
     <main class="app-main-content">
       <router-outlet></router-outlet>
     </main>
+    <app-toast></app-toast>
   `,
   styleUrls: ['./app.component.scss'],
 })
@@ -44,8 +47,16 @@ export class AppComponent {
   // The delay prevents ExpressionChangedAfterItHasBeenCheckedError
   isLoading$ = this.store.select(selectIsLoadingState).pipe(delay(0));
 
+
+  @ViewChild(ToastComponent) toastComponent!: ToastComponent;
+
   constructor(
     private breakpointsObserver: CustomBreakpointObserver,
-    private store: Store
+    private store: Store,
+    private toastService: ToastService
   ) {}
+
+  ngAfterViewInit(): void {
+    this.toastService.setToastComponent(this.toastComponent);
+  }
 }
