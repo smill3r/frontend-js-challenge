@@ -10,6 +10,7 @@ import { TrendResponse } from './models/trend-response.model';
 import { environment } from 'src/environments/environment';
 import { UpdateTrendResponse } from './models/update-trend-response.model';
 import { TrendDTO } from './models/trendDTO.model';
+import { DeleteTrendResponse } from './models/remove-trend-response.model';
 
 @Injectable()
 export class TrendService {
@@ -32,9 +33,17 @@ export class TrendService {
       .pipe(map(({ trend }) => this.mapToTrendModel(trend)));
   }
 
-  public updateTrend(trend: Partial<TrendDTO>, id: string): Observable<UpdateTrendResponse> {
+  public updateTrend(
+    trend: Partial<TrendDTO>,
+    id: string
+  ): Observable<UpdateTrendResponse> {
     const url = `${this.getAllUrl}/${id}`;
-    return this.httpClient.put<UpdateTrendResponse>(url,trend);
+    return this.httpClient.put<UpdateTrendResponse>(url, trend);
+  }
+
+  public deleteTrend(id: string): Observable<DeleteTrendResponse> {
+    const url = `${this.getAllUrl}/${id}`;
+    return this.httpClient.delete<DeleteTrendResponse>(url);
   }
 
   private mapToTrendModel(trendResponse: TrendResponse): Trend {
