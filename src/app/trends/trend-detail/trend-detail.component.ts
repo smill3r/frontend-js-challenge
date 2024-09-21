@@ -41,7 +41,7 @@ import { deleteTrend } from '../store/actions/trend-detail-page.actions';
       </div>
     </article>
 
-    <app-trend-compose *ngIf="this.composeTrendVisible" (close)="modalClosed()">
+    <app-trend-compose [visible]="this.composeTrendVisible" (close)="modalClosed()" [isEdit]="true">
     </app-trend-compose>
   `,
   styleUrls: ['./trend-detail.component.scss'],
@@ -60,7 +60,9 @@ export class TrendDetailComponent {
   }
 
   deleteTrend(trendId: string) {
-    this.store.dispatch(deleteTrend({ trendId: trendId }));
+    if(confirm("¿Deseas eliminar esta noticia?")) {
+      this.store.dispatch(deleteTrend({ trendId: trendId }));
+    }
   }
 
   modalClosed() {
