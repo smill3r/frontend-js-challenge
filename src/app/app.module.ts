@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { EffectsModule } from '@ngrx/effects';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
@@ -16,7 +17,8 @@ import { httpInterceptorProviders } from './app-http-interceptors';
 import { reducers } from './store/reducers';
 
 import localeEs from '@angular/common/locales/es';
-import { ToastComponent } from './shared/components/toast/toast.component';
+import { SharedModule } from './shared/shared.module';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 registerLocaleData(localeEs, 'es');
 
 @NgModule({
@@ -24,7 +26,6 @@ registerLocaleData(localeEs, 'es');
     AppComponent,
     AppProgressBarComponent,
     AppPageNotFoundComponent,
-    ToastComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +35,9 @@ registerLocaleData(localeEs, 'es');
     AppMenuModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([]),
-    StoreRouterConnectingModule.forRoot()
+    StoreRouterConnectingModule.forRoot(),
+    SharedModule,
+    BrowserAnimationsModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es' }, httpInterceptorProviders],
   bootstrap: [AppComponent],

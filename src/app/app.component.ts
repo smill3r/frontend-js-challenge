@@ -24,7 +24,7 @@ import { ToastService } from './shared/services/toast.service';
         />
       </a>
       <div class="app-current-date">
-        <span>{{ currentDate | date: 'dd MMMM yyyy' }}</span>
+        <span>{{ currentDate | date : 'dd MMMM yyyy' }}</span>
       </div>
     </header>
     <nav class="app-navigation">
@@ -36,6 +36,11 @@ import { ToastService } from './shared/services/toast.service';
       <router-outlet></router-outlet>
     </main>
     <app-toast></app-toast>
+    <app-floating-button (floatingButtonClicked)="createTrend()">
+      <img class="white-icon" src="../assets/Iconos/Actions/add.svg" />
+    </app-floating-button>
+    <app-trend-compose [visible]="this.composeTrendVisible" (close)="modalClosed()">
+    </app-trend-compose>
   `,
   styleUrls: ['./app.component.scss'],
 })
@@ -46,7 +51,7 @@ export class AppComponent {
   isLargeScreen$ = this.breakpointsObserver.isLarge$;
   // The delay prevents ExpressionChangedAfterItHasBeenCheckedError
   isLoading$ = this.store.select(selectIsLoadingState).pipe(delay(0));
-
+  composeTrendVisible = false;
 
   @ViewChild(ToastComponent) toastComponent!: ToastComponent;
 
@@ -58,5 +63,13 @@ export class AppComponent {
 
   ngAfterViewInit(): void {
     this.toastService.setToastComponent(this.toastComponent);
+  }
+
+  createTrend() {
+    this.composeTrendVisible = true;
+  }
+
+  modalClosed() {
+    this.composeTrendVisible = false;
   }
 }
