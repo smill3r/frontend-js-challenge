@@ -8,7 +8,7 @@
 }
 
 .modal__content {
-  position: absolute;
+  position: fixed;
   top: 0;
   height: 100%;
   right: 0;
@@ -16,7 +16,7 @@
   padding: 20px;
   z-index: 1001;
   border-radius: 33px 3px 3px 3px;
-  width: 33%;
+  width: 100%;
 }
 
 .modal__header {
@@ -46,11 +46,10 @@
     padding: 8px;
     border: 0.6px solid #d8d8d8;
     border-radius: 3px;
-    height: 400px;
+    height: 40vh;
   }
 
   select {
-
     padding: 8px;
     border: 0.6px solid #d8d8d8;
     border-radius: 3px;
@@ -59,4 +58,15 @@
 
 .app-button {
   padding: 0 15px;
+}
+
+.error-label {
+  color: red;
+}
+
+@media screen and (min-width: 768px) { 
+  .modal__content {
+    width: 33%;
+    position: absolute;
+  }
 }
