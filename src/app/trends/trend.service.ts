@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 import { UpdateTrendResponse } from './models/update-trend-response.model';
 import { TrendDTO } from './models/trendDTO.model';
 import { DeleteTrendResponse } from './models/remove-trend-response.model';
+import { CreateTrendResponse } from './models/create-trend-response.model';
 
 @Injectable()
 export class TrendService {
@@ -30,6 +31,13 @@ export class TrendService {
     const url = `${this.getAllUrl}/${id}`;
     return this.httpClient
       .get<GetOneTrendResponse>(url)
+      .pipe(map(({ trend }) => this.mapToTrendModel(trend)));
+  }
+
+  public createTrend(trend: TrendDTO): Observable<Trend> {
+    const url = `${this.getAllUrl}`;
+    return this.httpClient
+      .post<CreateTrendResponse>(url, trend)
       .pipe(map(({ trend }) => this.mapToTrendModel(trend)));
   }
 

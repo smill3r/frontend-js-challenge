@@ -6,3 +6,8 @@ export const updateTrend = createAction(
   '[Trend Compose Page] Update Trend',
   props<{ changes: Partial<TrendDTO>; trend: Trend }>()
 );
+
+export const createTrend = createAction(
+  '[Trend Compose Page] Create Trend',
+  props<{ newTrend: TrendDTO}>()
+)

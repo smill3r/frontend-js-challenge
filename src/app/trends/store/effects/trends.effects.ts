@@ -47,6 +47,24 @@ export class TrendsEffects {
     );
   });
 
+  createOneTrend$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(TrendComposePageActions.createTrend),
+      switchMap(({ newTrend }) =>
+        this.trendService.createTrend(newTrend).pipe(
+          map((trend) => {
+            if (trend) {
+              this.toastService.showSuccess('Article created');
+              return TrendsApiActions.createTrendSuccess({ trend });
+            }
+            return TrendsApiActions.noAction();
+          }),
+          catchError(() => of(TrendsApiActions.createTrendError()))
+        )
+      )
+    );
+  });
+
   updateOneTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(TrendComposePageActions.updateTrend),
@@ -77,6 +95,7 @@ export class TrendsEffects {
               this.toastService.showSuccess('Article deleted');
               return TrendsApiActions.deleteTrendSuccess({ id: trendId });
             }
+            this.toastService.showInfo('Article could not be deleted');
             return TrendsApiActions.deleteTrendError();
           }),
           catchError(() => of(TrendsApiActions.deleteTrendError()))
@@ -89,9 +108,18 @@ export class TrendsEffects {
     () =>
       this.actions$.pipe(
         ofType(TrendsApiActions.deleteTrendSuccess),
-        tap(() => {
-          this.router.navigate(['/']);
+        tap(({ id }) => {
+          return this.router.navigate(['/']);
         })
+      ),
+    { dispatch: false }
+  );
+
+  navigateAfterCreate$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(TrendsApiActions.createTrendSuccess),
+        tap(({ trend }) => this.router.navigate([`/trends/${trend.id}`]))
       ),
     { dispatch: false }
   );
